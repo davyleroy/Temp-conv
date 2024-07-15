@@ -3,8 +3,8 @@ import 'Splashscreen.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: SplashScreen(), // Set the SplashScreen as the initial route
-  )); //Material app
+    home: SplashScreen(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +32,7 @@ class TempState extends State<TempApp> {
   late double input;
   double output = 0.0;
   bool? fOrC = true;
+  List<String> calculationHistory = [];
 
   @override
   void initState() {
@@ -67,25 +68,6 @@ class TempState extends State<TempApp> {
       padding: const EdgeInsets.all(15.0),
       child: Row(
         children: <Widget>[
-          //Text("Choose Fahrenheit or Celsius"),
-          //Switch(
-          //  value: fOrC,
-          //  onChanged: (e) {
-          //    setState(() {
-          //      fOrC = !fOrC;
-          //    });
-          //  },
-          //)
-
-          //Checkbox(
-          //  value: fOrC,
-          //  onChanged: (e) {
-          //    setState(() {
-          //      fOrC = !fOrC;
-          //    });
-          //  },
-          //),
-
           const Text("F"),
           Radio<bool>(
               groupValue: fOrC,
@@ -116,6 +98,12 @@ class TempState extends State<TempApp> {
             fOrC == false
                 ? output = (input - 32) * (5 / 9)
                 : output = (input * 9 / 5) + 32;
+
+            String calculation = fOrC == false
+                ? "${input.toStringAsFixed(2)} °F : ${output.toStringAsFixed(2)} °C"
+                : "${input.toStringAsFixed(2)} °C : ${output.toStringAsFixed(2)} °F";
+
+            calculationHistory.insert(0, calculation);
           });
           AlertDialog dialog = AlertDialog(
             content: fOrC == false
@@ -130,6 +118,18 @@ class TempState extends State<TempApp> {
       ),
     );
 
+    Widget historyList = Container(
+      height: 200,
+      child: ListView.builder(
+        itemCount: calculationHistory.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(calculationHistory[index]),
+          );
+        },
+      ),
+    );
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -140,6 +140,10 @@ class TempState extends State<TempApp> {
               inputField,
               tempSwitch,
               calcBtn,
+              SizedBox(height: 20),
+              Text("Calculation History",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              historyList,
             ],
           ),
         ),
