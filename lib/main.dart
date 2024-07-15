@@ -68,7 +68,7 @@ class TempState extends State<TempApp> {
       padding: const EdgeInsets.all(15.0),
       child: Row(
         children: <Widget>[
-          const Text("F"),
+          const Text("°F"),
           Radio<bool>(
               groupValue: fOrC,
               value: false,
@@ -77,7 +77,7 @@ class TempState extends State<TempApp> {
                   fOrC = v;
                 });
               }),
-          const Text("C"),
+          const Text("°C"),
           Radio<bool>(
               groupValue: fOrC,
               value: true,
